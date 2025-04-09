@@ -1,7 +1,7 @@
 -module(pollution).
 
 -export([create_monitor/0, add_station/3, get_one_value/4, add_value/5, remove_value/4,
-    get_station_min/3, get_daily_mean/3, get_moving_mean/4, get_example_data/0, get_station_mean/3, get_station/2]).
+    get_station_min/3, get_daily_mean/3, get_moving_mean/4, get_example_data/0, get_station_mean/3]).
 
 -record(monitor, { coordinates_map = #{}, name_map = #{} }).
 -record(station, { coordinates, name, readings = [] } ).
@@ -182,46 +182,46 @@ get_weighted_values(ReadingsList, LastReading) ->
 get_example_data() ->
     M1 = create_monitor(),
 
-    M2 = add_station(M1, "A", {1,1}),
-    M3 = add_station(M2, "B", {2,2}),
-    M4 = add_station(M3, "C", {3,3}),
+    M2 = add_station("A", {1,1}, M1),
+    M3 = add_station("B", {2,2}, M2),
+    M4 = add_station("C", {3,3}, M3),
 
-    M5 = add_value(M4, "A", {{2025, 3, 14}, {08,15,10}}, "pm10", 42),
-    M6 = add_value(M5, "A", {{2025, 3, 14}, {08,15,10}}, "pm2.5", 30),
-    M7 = add_value(M6, "A", {{2025, 3, 14}, {08,15,10}}, "temp", 18),
+    M5 = add_value("A", {{2025, 3, 14}, {08,15,10}}, "pm10", 42, M4),
+    M6 = add_value("A", {{2025, 3, 14}, {08,15,10}}, "pm2.5", 30, M5),
+    M7 = add_value("A", {{2025, 3, 14}, {08,15,10}}, "temp", 18, M6),
 
-    M8 = add_value(M7, "B", {{2025, 3, 14}, {08,10,50}}, "pm2.5", 35),
-    M9 = add_value(M8, "B", {{2025, 3, 14}, {08,10,50}}, "temp", 19),
-    M10 = add_value(M9, "B", {{2025, 3, 14}, {08,10,50}}, "hum", 18),
+    M8 = add_value("B", {{2025, 3, 14}, {08,10,50}}, "pm2.5", 35, M7),
+    M9 = add_value("B", {{2025, 3, 14}, {08,10,50}}, "temp", 19, M8),
+    M10 = add_value("B", {{2025, 3, 14}, {08,10,50}}, "hum", 18, M9),
 
-    M11 = add_value(M10, "C", {{2025, 3, 14}, {08,45,30}}, "pm2.5", 32),
-    M12 = add_value(M11, "C", {{2025, 3, 14}, {08,45,30}}, "pm1", 22),
-    M13 = add_value(M12, "C", {{2025, 3, 14}, {08,45,30}}, "temp", 17),
-
-
-    M14 = add_value(M13, "A", {{2025, 3, 14}, {12,35,18}}, "pm10", 40),
-    M15 = add_value(M14, "A", {{2025, 3, 14}, {12,35,18}}, "pm2.5", 31),
-    M16 = add_value(M15, "A", {{2025, 3, 14}, {12,35,18}}, "temp", 18),
-
-    M17 = add_value(M16, "B", {{2025, 3, 14}, {12,31,43}}, "pm2.5", 38),
-    M18 = add_value(M17, "B", {{2025, 3, 14}, {12,31,43}}, "temp", 18),
-    M19 = add_value(M18, "B", {{2025, 3, 14}, {12,31,43}}, "hum", 12),
-
-    M20 = add_value(M19, "C", {{2025, 3, 14}, {12,40,05}}, "pm2.5", 29),
-    M21 = add_value(M20, "C", {{2025, 3, 14}, {12,40,05}}, "pm1", 23),
-    M22 = add_value(M21, "C", {{2025, 3, 14}, {12,40,05}}, "temp", 16),
+    M11 = add_value("C", {{2025, 3, 14}, {08,45,30}}, "pm2.5", 32, M10),
+    M12 = add_value("C", {{2025, 3, 14}, {08,45,30}}, "pm1", 22, M11),
+    M13 = add_value("C", {{2025, 3, 14}, {08,45,30}}, "temp", 17, M12),
 
 
-    M23 = add_value(M22, "A", {{2025, 3, 14}, {14,20,00}}, "pm10", 45),
-    M24 = add_value(M23, "A", {{2025, 3, 14}, {14,20,00}}, "pm2.5", 33),
-    M25 = add_value(M24, "A", {{2025, 3, 14}, {14,20,00}}, "temp", 19),
+    M14 = add_value("A", {{2025, 3, 14}, {12,35,18}}, "pm10", 40, M13),
+    M15 = add_value("A", {{2025, 3, 14}, {12,35,18}}, "pm2.5", 31, M14),
+    M16 = add_value("A", {{2025, 3, 14}, {12,35,18}}, "temp", 18, M15),
 
-    M26 = add_value(M25, "B", {{2025, 3, 14}, {14,18,55}}, "pm2.5", 40),
-    M27 = add_value(M26, "B", {{2025, 3, 14}, {14,18,55}}, "temp", 20),
-    M28 = add_value(M27, "B", {{2025, 3, 14}, {14,18,55}}, "hum", 15),
+    M17 = add_value("B", {{2025, 3, 14}, {12,31,43}}, "pm2.5", 38, M16),
+    M18 = add_value("B", {{2025, 3, 14}, {12,31,43}}, "temp", 18, M17),
+    M19 = add_value("B", {{2025, 3, 14}, {12,31,43}}, "hum", 12, M18),
 
-    M29 = add_value(M28, "C", {{2025, 3, 14}, {14,35,30}}, "pm2.5", 31),
-    M30 = add_value(M29, "C", {{2025, 3, 14}, {14,35,30}}, "pm1", 24),
-    M31 = add_value(M30, "C", {{2025, 3, 14}, {14,35,30}}, "temp", 17),
+    M20 = add_value("C", {{2025, 3, 14}, {12,40,05}}, "pm2.5", 29, M19),
+    M21 = add_value("C", {{2025, 3, 14}, {12,40,05}}, "pm1", 23, M20),
+    M22 = add_value("C", {{2025, 3, 14}, {12,40,05}}, "temp", 16, M21),
+
+
+    M23 = add_value("A", {{2025, 3, 14}, {14,20,00}}, "pm10", 45, M22),
+    M24 = add_value("A", {{2025, 3, 14}, {14,20,00}}, "pm2.5", 33, M23),
+    M25 = add_value("A", {{2025, 3, 14}, {14,20,00}}, "temp", 19, M24),
+
+    M26 = add_value("B", {{2025, 3, 14}, {14,18,55}}, "pm2.5", 40, M25),
+    M27 = add_value("B", {{2025, 3, 14}, {14,18,55}}, "temp", 20, M26),
+    M28 = add_value("B", {{2025, 3, 14}, {14,18,55}}, "hum", 15, M27),
+
+    M29 = add_value("C", {{2025, 3, 14}, {14,35,30}}, "pm2.5", 31, M28),
+    M30 = add_value("C", {{2025, 3, 14}, {14,35,30}}, "pm1", 24, M29),
+    M31 = add_value("C", {{2025, 3, 14}, {14,35,30}}, "temp", 17, M30),
 
     M31.
