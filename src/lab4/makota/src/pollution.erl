@@ -145,9 +145,8 @@ get_station(StationIdentifier, Monitor) ->
 
     case StationIdentifier of
         {station, _, Name, _} -> get_station(Name, Monitor);
-        [_|_] -> maps:get(StationIdentifier, Monitor#monitor.name_map, Error);
         {_,_} -> maps:get(StationIdentifier, Monitor#monitor.coordinates_map, Error);
-        _ -> {error, bad_stationidentifier_format}
+        _ -> maps:get(StationIdentifier, Monitor#monitor.name_map, Error)
     end.
 
 %% private

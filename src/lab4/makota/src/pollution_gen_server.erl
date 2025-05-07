@@ -21,13 +21,13 @@ cast(Data) ->
     gen_server:cast(?MODULE, Data).
 
 add_station(Name, Coordinates) ->
-    cast( {add_station, Name, Coordinates} ).
+    call( {add_station, Name, Coordinates} ).
 
 add_value(StationIdentifier, Datetime, Type, Value) ->
-    cast( {add_value, StationIdentifier, Datetime, Type, Value} ).
+    call( {add_value, StationIdentifier, Datetime, Type, Value} ).
 
 remove_value(StationIdentifier, Datetime, Type) ->
-    cast( {remove_value, StationIdentifier, Datetime, Type} ).
+    call( {remove_value, StationIdentifier, Datetime, Type} ).
 
 get_one_value(StationIdentifier, Datetime, Type) ->
     call( {get_one_value, StationIdentifier, Datetime, Type} ).
@@ -75,31 +75,34 @@ handle_call({get_daily_mean, Date, Type}, _From, Monitor) ->
 
 handle_call({get_moving_mean, StationIdentifier, Date, Type}, _From, Monitor) ->
     Result = pollution:get_moving_mean(StationIdentifier, Date, Type, Monitor),
-    {reply, Result, Monitor}.
+    {reply, Result, Monitor};
 
-handle_cast({add_station, Name, Coordinates}, Monitor) ->
+handle_call({add_station, Name, Coordinates}, _From, Monitor) ->
     case pollution:add_station(Name, Coordinates, Monitor) of
-        {error, _} ->
-            {noreply, Monitor};
+        Error = {error, _} ->
+            {reply, Error, Monitor};
         NewMonitor ->
-            {noreply, NewMonitor}
+            {reply, ok, NewMonitor}
     end;
 
-handle_cast({add_value, StationIdentifier, Datetime, Type, Value}, Monitor) ->
+handle_call({add_value, StationIdentifier, Datetime, Type, Value}, _From, Monitor) ->
     case pollution:add_value(StationIdentifier, Datetime, Type, Value, Monitor) of
-        {error, _} ->
-            {noreply, Monitor};
+        Error = {error, _} ->
+            {reply, Error, Monitor};
         NewMonitor ->
-            {noreply, NewMonitor}
+            {reply, ok, NewMonitor}
     end;
 
-handle_cast({remove_value, StationIdentifier, Datetime, Type}, Monitor) ->
+handle_call({remove_value, StationIdentifier, Datetime, Type}, _From, Monitor) ->
     case pollution:remove_value(StationIdentifier, Datetime, Type, Monitor) of
-        {error, _} ->
-            {noreply, Monitor};
+        Error = {error, _} ->
+            {reply, Error, Monitor};
         NewMonitor ->
-            {noreply, NewMonitor}
+            {reply, ok, NewMonitor}
     end.
+
+handle_cast({crash}, _Monitor) ->
+    no:exist().
 
 terminate(Reason, Monitor) ->
     io:format("Server: exit with value ~w~n", [Monitor]),
