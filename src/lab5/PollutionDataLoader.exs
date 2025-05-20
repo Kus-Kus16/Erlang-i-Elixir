@@ -5,7 +5,7 @@
 # ── Section ──
 
 defmodule PollutionDataLoader do
-  defp parse_line(line) do
+  def parse_line(line) do
     [datetime, type, value, station_id, station_name, coords] = line |> String.split(";")
     date = datetime |> String.slice(0..9) |> String.split("-") |> Enum.map(&String.to_integer/1)
       |> List.to_tuple()
@@ -23,7 +23,7 @@ defmodule PollutionDataLoader do
   def get_data(filepath) do
     File.read!(filepath)
     |> String.trim()
-    |> String.split("\n")
+    |> String.split("\r\n")
     |> Enum.map(&parse_line/1)
   end
 
@@ -40,17 +40,28 @@ stations = PollutionDataLoader.get_stations(data)
 
 Application.stop(:makota)
 
+Code.append_path("C:\\Users\\Maciej\\Desktop\\Programowanie\\Erlang-i-Elixir\\src\\lab4\\makota\\_build\\default\\lib\\makota\\ebin")
 Application.start(:makota)
 
-for s <- stations do 
-  :pollution_gen_server.add_station("#{s.stationId} #{s.stationName}", s.location) end
-|> Enum.uniq()
+fn () -> for s <- stations
+  do :pollution_gen_server.add_station("#{s.stationId} #{s.stationName}", s.location) end end
+|> :timer.tc() |> elem(0) |> Kernel./(1_000_000)
 
 fn () -> for r <- data 
   do :pollution_gen_server.add_value(r.location, r.datetime, r.pollutionType, r.pollutionLevel) end end
 |> :timer.tc() |> elem(0) |> Kernel./(1_000_000)
 
 :pollution_gen_server.get_station_min("9910 Polska, Kraków, Studencka", "PM10")
+
+fn () -> 
+  :pollution_gen_server.get_station_min("9910 Polska, Kraków, Studencka", "PM10") end
+|> :timer.tc() |> elem(0) |> Kernel./(1_000_000)
+
+:pollution_gen_server.get_daily_mean({2024, 2, 10}, "PM25")
+
+fn () -> 
+  :pollution_gen_server.get_daily_mean("{2024, 2, 10}", "PM25") end
+|> :timer.tc() |> elem(0) |> Kernel./(1_000_000)
 
 :pollution_gen_server.get_station_mean("9910 Polska, Kraków, Studencka", "PM10")
 
