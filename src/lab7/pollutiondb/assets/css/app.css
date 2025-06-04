@@ -1,0 +1,142 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+body {
+    margin: 2em auto;
+    padding: 1em;
+    background-color: #f7f7f7;
+    color: #333;
+    height: 100%;
+}
+
+form {
+    margin-bottom: 1em;
+    padding: 1em;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0.4em;
+    margin: 0.3em 0 1em 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #fd4f00;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(253, 79, 0, 0.2);
+}
+
+input[type="submit"] {
+    background-color: #fd4f00;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #e24302;
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background-color: #666;
+    margin: 2em 0;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+th, td {
+    padding: 0.75em;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+form label {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin: 0.6em 0;
+    font-weight: 500;
+}
+
+form input[type="range"] {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    border-radius: 4px;
+    background: #ddd;
+    outline: none;
+    margin: 0 0.5em;
+    cursor: pointer;
+}
+
+form input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 75%;
+    background: #fd4f00;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form input[type="range"]::-webkit-slider-thumb:hover {
+    background: #e24302;
+}
+
+input[type="date"] {
+    padding: 0.4em;
+    width: 20%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    font-size: 1em;
+}
+
+input[type="date"]:focus {
+    border-color: #fd4f00;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(253, 79, 0, 0.2);
+}
+
+select {
+    padding: 0.4em;
+    margin: 0.3em 0 1em 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+}
+
+select:focus {
+    border-color: #fd4f00;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(253, 79, 0, 0.2);
+}
+
